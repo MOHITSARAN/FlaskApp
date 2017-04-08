@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Flask App</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=3" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+    <form action="/" method="POST" data-toggle="validator">
+      <div class="login">
+        <div class="login-screen">
+          {% if error %}
+          <p class="error" style="text-align: center; color: red;">{{ error }}
+          {% endif %}
+          <div class="app-title">
+            <h1>Login</h1>
+          </div>     
+          <div class="login-form">
+            <div class="control-group">
+            <input type="text" class="login-field" value="" placeholder="username" name="username" required>
+            <label class="login-field-icon fui-user" for="login-name"></label>
+            </div>
+     
+            <div class="control-group">
+            <input type="password" class="login-field" value="" placeholder="password" name="password" required>
+            <label class="login-field-icon fui-lock" for="login-pass"></label>
+            </div>
+            <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" >
+            <br>
+            <a href="/signup">Don't have an account? Register</a>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.11.1/validate.min.js"></script>
+  </body>
+</html>

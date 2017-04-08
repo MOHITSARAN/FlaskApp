@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Flask App</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+   	
+  </head>
+  <body>
+	   <div class="container">
+		<div class="header">
+	        <nav>
+	          <ul class="nav nav-pills pull-right">
+			    <li role="presentation" class="active"><a href="/dashboard">Dasboard</a></li>
+		        <li role="presentation" ><a href="/logout">Logout</a></li>
+	          </ul>
+	        </nav>
+	        <h3 class="text-muted">Flask App</h3>
+	    </div>
+	    <hr></br>
+	    <div>
+			<div class="well" id="order_form" style="display: none;">
+			<form action="/dashboard" data-toggle="validator" method="POST">
+				<h3>Add new item in order</h3>
+				  <div class="row">
+	               <div class="col-md-2">				
+	                <input type="text" name="order_status" placeholder="Status" class="form-control"  required>
+	               </div>
+	               <div class="col-md-2">				
+	                <input type="text" name="order_id" placeholder="Order Id" class="form-control"  required>
+	               </div>
+	               <div class="col-md-2">				
+	                <input type="text" name="product_name" placeholder="Product Name" class="form-control"  required>
+	               </div>
+	               <div class="col-md-2">				
+	                <input type="text" name="product_url" placeholder="Product URL" class="form-control"  required>
+	               </div>
+	               <div class="col-md-2">				
+	                <input type="number" name="cost_price" placeholder="Price" class="form-control"  required>
+	               </div>
+	              <div class="col-md-2">
+	              	<input type="submit" value="Submit" class="btn btn-danger" >				
+	              </div>
+				</div>
+    		</form>
+	        </div>
+		<div class="well">
+		    <div class="row">
+              <div class="col-md-2">				
+                <select class="filter1 form-control" id="filter1_item">                                       
+                </select> 
+               </div>
+               {% if status %}
+          		<div class="col-md-7">				
+	                <div class="alert alert-success" style = "height:35px;padding-top:8px;width:50%;Float:left;margin-left:10%;">
+	                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	                <span class="glyphicon glyphicon-ok"></span>                
+	                    {{status}}
+	            	</div>
+             	</div>
+             	<div class="col-md-2">
+             	{% else %}
+             	<div class="col-md-2 col-xs-offset-7">
+          		{% endif %}				
+              	<a class="btn btn-success" id="add_order" title="Add New Order"><i class="fa fa-plus" aria-hidden="true"></i> Add Order</a>
+              	</div>
+              	<div class="">
+              	<a href="/scrapy" class="btn btn-danger" title="Start Crawlers"><i class="fa fa-download" aria-hidden="true"></i> Scrapy</a> 
+              	</div>
+              </div>
+			</div>
+            </br> 
+			<table id="example" class="display" cellspacing="0" width="100%">
+			    <thead>
+			    <tr>
+			        <th>ID </th>
+			        <th>Status</th>
+			        <th>Order Id</th>
+			        <th>Product Name</th>
+			        <th>Product URL</th>
+			        <th>Price</th>
+			    </tr>
+			    </thead>
+			    <tbody>
+				{% for row in rows %}
+			    <tr>
+			        <td>{{ row[0] }}</td>
+			   
+			        <td>{{ row[1] }}</td>
+			   
+			        <td>{{ row[2] }}</td>
+			    
+			        <td>{{ row[3] }}</td>
+			    
+			        <td><a href="{{ row[4] }}" target="blank">{{ row[4] }}</a></td>
+			    
+			        <td class="price">{{ row[5] }}</td>
+			    </tr>
+			    {% endfor %}
+			</tbody>
+			</table>
+		</div>
+      	<footer class="footer">
+        	</hr>
+      	</footer>
+    </div>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.11.1/validate.min.js"></script>
+
+    <script type="text/javascript">
+		$(document).ready(function() {
+	    	var data_table = $('#example').DataTable(
+	    		{
+					iDisplayLength: 150,
+					"sDom": 'rt',
+					initComplete: function () {
+
+			           var column2 = this.api().column(1);
+			           var select2 = $('#filter1_item');
+			           select2.append('<option value="">Status</option></select>');
+			               select2.on('change', function () {
+			                  var val2 = $(this).val();
+			                  //column2.search(val2 ? '^' + $(this).val() + '$' : val2, true, false).draw();
+			                  column2.search(val2, false, true).draw();
+			                  if(val2==""){
+			                  $("#filter1_item").val("");
+			                  }
+			               });
+
+			           column2.data().unique().sort().each(function (d, j) {
+			               select2.append('<option value="' + d + '">' + d + '</option>');
+			           });
+			         }
+	    		});         
+
+	          jQuery('.price').each(function() {
+	            var currentElement = $(this);
+	            var doller = currentElement.text();
+	            USD = parseInt(doller);
+	            price = USD * 66;
+	            currentElement.html('<i class="fa fa-inr"></i>'+price.toFixed(2)); 
+	          });
+            data_table.order( [ 0, 'desc' ] ).draw();
+		});
+		$(document).ready(
+	    function(){
+	        $("#add_order").click(function () {
+	            $("#order_form").show("slow");
+	        });
+	    });
+	</script>
+
+  </body>
+</html>
+

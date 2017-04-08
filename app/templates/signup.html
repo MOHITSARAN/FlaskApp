@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Flask App</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=3" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+    <form action="/signup" data-toggle="validator" method="POST">
+      <div class="login">
+        <div class="login-screen">
+          <div class="app-title">
+            <h1>SignUp</h1>
+          </div>     
+          <div class="login-form">
+            <div class="control-group">
+            <input type="text" class="login-field" value="" placeholder="username" name="username" required>
+            <label class="login-field-icon fui-user"></label>
+            </div>
+            <div class="control-group">
+            <input type="email" class="login-field" value="" placeholder="E-mail" name="email" data-error="Email address is invalid" required>
+            <label class="login-field-icon fui-lock"></label>
+            </div>
+            <div class="control-group">
+            <input type="password" class="login-field" value="" data-minlength="6" placeholder="Password" name="password" required>
+            <label class="login-field-icon fui-lock"></label>
+            </div>
+            <div class="control-group">
+            <input type="number" class="login-field" value="" data-minlength="10" placeholder="Phone Number" name="phone" required>
+            <label class="login-field-icon fui-lock"></label>
+            </div>
+            <input type="submit" value="SignUp" class="btn btn-primary btn-large btn-block" >
+           <br>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+    <!--All JS -- >
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.11.1/validate.min.js"></script>
+  </body>
+</html>
